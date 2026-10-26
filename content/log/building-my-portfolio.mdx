@@ -1,0 +1,39 @@
+export const metadata = {
+  title: "Building my portfolio in Next.js as a React dev",
+  description:
+    "Why I rebuilt my site from scratch, and what changed in Next.js since I last used it.",
+  date: "2026-10-26",
+  tags: ["nextjs", "meta"],
+  draft: true,
+};
+
+{/* TODO(fabio): placeholder draft that exercises the MDX pipeline. Rewrite in your own words before setting draft: true. */}
+
+I rebuilt this site from an empty repo. This note covers why, and what I'd
+tell another React developer picking up the App Router today.
+
+## Why start over
+
+- The old site showed off a gimmick, not the work
+- I want somewhere to [log what I'm learning](/log), in public
+- Shipping something end to end, on a deadline, is the point
+
+## What surprised me
+
+Posts are plain `.mdx` files that export their own metadata:
+
+```ts
+export const metadata = {
+  title: "Building my portfolio",
+  date: "2026-10-26",
+  tags: ["nextjs"],
+};
+```
+
+| Piece   | Choice          |
+| ------- | --------------- |
+| Content | `@next/mdx`     |
+| Styling | Tailwind CSS v4 |
+| Hosting | Vercel          |
+
+> Ship simple, add flair later.
