@@ -23,7 +23,7 @@ export const SectionHeading: FC<SectionHeadingProps> = ({
         href={href}
         className="text-sm text-muted transition-colors hover:text-foreground"
       >
-        {linkLabel} →
+        {linkLabel} <span aria-hidden>→</span>
       </Link>
     </div>
   );

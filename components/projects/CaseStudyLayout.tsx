@@ -26,7 +26,7 @@ export const CaseStudyLayout: FC<CaseStudyLayoutProps> = ({
         href="/projects"
         className="text-sm text-muted transition-colors hover:text-foreground"
       >
-        ← Projects
+        <span aria-hidden>←</span> Projects
       </Link>
       <header className="mt-8 mb-10">
         <div className="flex items-center gap-3 text-sm text-muted">
@@ -47,12 +47,12 @@ export const CaseStudyLayout: FC<CaseStudyLayoutProps> = ({
           <div className="mt-5 flex gap-5">
             {links.live && (
               <a href={links.live} className={linkClass}>
-                Live site ↗
+                Live site <span aria-hidden>↗</span>
               </a>
             )}
             {links.repo && (
               <a href={links.repo} className={linkClass}>
-                Source ↗
+                Source <span aria-hidden>↗</span>
               </a>
             )}
           </div>

@@ -47,7 +47,7 @@ export default async function PostPage({ params }: PageProps<"/log/[slug]">) {
         href="/log"
         className="text-sm text-muted transition-colors hover:text-foreground"
       >
-        ← Log
+        <span aria-hidden>←</span> Log
       </Link>
       <header className="mt-8 mb-10">
         <time dateTime={metadata.date} className="text-sm text-muted">
