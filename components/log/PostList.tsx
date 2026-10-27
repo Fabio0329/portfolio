@@ -1,9 +1,9 @@
 import Link from "next/link";
 import type { FC } from "react";
+import { DraftBadge } from "@/components/ui/DraftBadge";
+import { TagList } from "@/components/ui/TagList";
 import type { Post } from "@/lib/content/types";
 import { formatDate } from "@/lib/dates";
-import { DraftBadge } from "./DraftBadge";
-import { TagList } from "./TagList";
 
 type PostListProps = {
   posts: Post[];

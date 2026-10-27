@@ -1,0 +1,71 @@
+export const metadata = {
+  title: "This portfolio site",
+  summary:
+    "A fast, fully static portfolio with a learning log, built in two weeks to show my work as I move into Forward Deployed Engineering.",
+  status: "building",
+  date: "2026-10-26",
+  stack: ["Next.js", "TypeScript", "Tailwind CSS", "MDX", "Vercel"],
+  links: { repo: "https://github.com/Fabio0329/portfolio" },
+  draft: true,
+};
+
+{/* TODO(fabio): drafted from what we've built so far. Rewrite in your own voice, fill in "What I learned", and set status: "shipped" and draft: false at launch. */}
+
+## Problem and user
+
+The people reading this site are recruiters and hiring managers for Forward
+Deployed Engineer roles. They give a portfolio well under a minute, and they're
+looking for evidence that someone ships end to end, learns fast, and explains
+their work clearly.
+
+Most of my past work is under NDA or was a team effort, so a list of old
+projects wouldn't show much. The site has to create its own evidence.
+
+## Discovery and constraints
+
+- **Thin public history**, so the site leans on a dated learning log and
+  write-ups like this one instead of padded project cards.
+- **Two weeks, one person.** Ship a simple version first and save the bold
+  redesign for after launch.
+- **No servers in the first version.** Fully static, no API keys, nothing to
+  keep running.
+- **Easy to restyle later.** Colors live in a small set of design tokens so a
+  redesign is mostly a token change.
+
+## Architecture
+
+```text
+content/log/*.mdx ───────┐
+                         ├─> @next/mdx (build) ─> static HTML + RSS ─> Vercel CDN
+content/projects/*.mdx ──┘
+```
+
+Posts and case studies are MDX files in the repo. At build time Next.js
+compiles them, checks their metadata, and pre-renders every page. Visitors get
+plain HTML files, so there's nothing to break at request time.
+
+## Build
+
+- **Files over a CMS.** Content goes through the same git review as code, and
+  one module (`lib/content`) is the only code that knows where it lives.
+- **Fail the build, not the page.** A post with missing metadata stops the
+  deploy instead of going live half filled.
+- **Drafts.** Work in progress shows locally and stays off the live site.
+- **Staged delivery.** Seven stages, each reviewed and committed before the
+  next one starts.
+
+## Evaluation
+
+- Every route is pre-rendered at build time, confirmed in the build output.
+- Before launch: Lighthouse 95+ in every category, a check at phone width
+  (375px), and link previews tested.
+
+## Handoff
+
+If this were a customer's site, their team would need two things: how to add
+content (drop an MDX file in a folder) and where to change it if the content
+moves to a CMS (one module). Both are documented in the repo.
+
+## What I learned
+
+{/* TODO(fabio) */}

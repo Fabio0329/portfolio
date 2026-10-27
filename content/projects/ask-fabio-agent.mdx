@@ -1,0 +1,28 @@
+export const metadata = {
+  title: "Ask about Fabio",
+  summary:
+    "A chat agent that answers questions about my work using my resume, log, and case studies, with sources and a public eval set.",
+  status: "building",
+  date: "2026-10-27",
+  stack: ["Claude API", "Tool use", "Next.js", "Evals"],
+  draft: true,
+};
+
+{/* TODO(fabio): set the real start date and draft: false when work begins (Phase 2). */}
+
+## Problem and user
+
+A recruiter has a specific question, like "has Fabio worked with LLM tool
+use?", and doesn't want to read the whole site to find out.
+
+## Plan
+
+- Streaming chat on the site, powered by the Claude API with tool use over my
+  resume, log posts, and case studies
+- Every answer cites the pages it came from
+- A small public eval set showing how answers are checked, and how often
+  they're right
+
+## Status
+
+Starting after the site launches. Progress will show up in the log.

@@ -1,20 +1,11 @@
-import { readdir } from "node:fs/promises";
-import path from "node:path";
 import type { MDXContent } from "mdx/types";
+import { isVisible, listSlugs } from "./listing";
 import type { Post, PostMetadata } from "./types";
 import { validatePostMetadata } from "./validate";
 
-const logDir = path.join(process.cwd(), "content", "log");
-
-// `npm run dev` shows drafts; `npm run build` leaves them out.
-const showDrafts = process.env.NODE_ENV !== "production";
-
 /** Visible posts, newest first. */
 export const getPosts = async (): Promise<Post[]> => {
-  const files = await readdir(logDir);
-  const slugs = files
-    .filter((file) => file.endsWith(".mdx"))
-    .map((file) => file.replace(/\.mdx$/, ""));
+  const slugs = await listSlugs("log");
 
   const posts = await Promise.all(
     slugs.map(async (slug) => {
@@ -23,9 +14,7 @@ export const getPosts = async (): Promise<Post[]> => {
     }),
   );
 
-  return posts
-    .filter((post) => showDrafts || !post.draft)
-    .sort((a, b) => b.date.localeCompare(a.date));
+  return posts.filter(isVisible).sort((a, b) => b.date.localeCompare(a.date));
 };
 
 /** A single post with its compiled content, or null if missing or hidden. */

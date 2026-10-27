@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { DraftBadge } from "@/components/log/DraftBadge";
-import { TagList } from "@/components/log/TagList";
+import { DraftBadge } from "@/components/ui/DraftBadge";
+import { TagList } from "@/components/ui/TagList";
 import { getPost, getPosts } from "@/lib/content/posts";
 import { formatDate } from "@/lib/dates";
 
