@@ -16,6 +16,7 @@ export const metadata = {
   date: "2026-10-27", // start date while building, ship date once shipped
   stack: ["Next.js", "TypeScript"],
   links: { live: "https://...", repo: "https://github.com/..." }, // optional
+  featured: true, // optional: show on the home page
   draft: true,
 };
 

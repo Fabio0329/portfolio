@@ -30,7 +30,8 @@ export const validateProjectMetadata = (
   metadata: Partial<ProjectMetadata> | undefined,
 ): ProjectMetadata => {
   const file = `content/projects/${slug}.mdx`;
-  const { title, summary, status, date, stack, links, draft } = metadata ?? {};
+  const { title, summary, status, date, stack, links, featured, draft } =
+    metadata ?? {};
 
   if (!title || !summary || !status || !date || !Array.isArray(stack)) {
     throw new Error(
@@ -44,7 +45,7 @@ export const validateProjectMetadata = (
   }
   checkDate(file, date);
 
-  return { title, summary, status, date, stack, links, draft };
+  return { title, summary, status, date, stack, links, featured, draft };
 };
 
 // Content sorts by comparing dates as strings, which only works for YYYY-MM-DD.

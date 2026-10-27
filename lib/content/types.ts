@@ -29,6 +29,8 @@ export type ProjectMetadata = {
     live?: string;
     repo?: string;
   };
+  /** Show on the home page. */
+  featured?: boolean;
   draft?: boolean;
 };
 

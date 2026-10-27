@@ -7,9 +7,13 @@ import { formatDate } from "@/lib/dates";
 
 type PostListProps = {
   posts: Post[];
+  /** h2 on /log; h3 when the list sits under its own section heading. */
+  headingLevel?: "h2" | "h3";
 };
 
-export const PostList: FC<PostListProps> = ({ posts }) => {
+export const PostList: FC<PostListProps> = ({ posts, headingLevel = "h2" }) => {
+  const Heading = headingLevel;
+
   if (posts.length === 0) {
     return <p className="text-muted">No posts yet. The first one is coming.</p>;
   }
@@ -22,7 +26,7 @@ export const PostList: FC<PostListProps> = ({ posts }) => {
             <time dateTime={post.date} className="text-sm text-muted">
               {formatDate(post.date)}
             </time>
-            <h2 className="mt-1 text-lg font-medium">
+            <Heading className="mt-1 text-lg font-medium">
               <Link
                 href={`/log/${post.slug}`}
                 className="transition-colors hover:text-accent"
@@ -30,7 +34,7 @@ export const PostList: FC<PostListProps> = ({ posts }) => {
                 {post.title}
               </Link>
               {post.draft && <DraftBadge />}
-            </h2>
+            </Heading>
             <p className="mt-1 text-muted">{post.description}</p>
             <TagList tags={post.tags} />
           </article>

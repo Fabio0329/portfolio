@@ -4,6 +4,8 @@ export const site = {
   name: "Fabio",
   title: "Software Engineer",
   pitch: "I turn fuzzy problems into shipped AI products.",
+  intro:
+    "I've spent 5+ years building products people use every day, mostly on the frontend. Now I'm moving into Forward Deployed Engineering: working with customers to find what they actually need, then shipping the AI tools that solve it.",
   description:
     "Software engineer focused on shipping AI-powered products end to end.",
   url: "https://example.com",
