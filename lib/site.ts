@@ -1,18 +1,18 @@
 // Single source of truth for identity, links, and the "Now" block.
 // TODO(fabio): replace placeholder values before launch.
 export const site = {
-  name: "Fabio",
+  name: "Fabio Restrepo",
   title: "Software Engineer",
   pitch: "I turn fuzzy problems into shipped AI products.",
   intro:
-    "I've spent 5+ years building products people use every day, mostly on the frontend. Now I'm moving into Forward Deployed Engineering: working with customers to find what they actually need, then shipping the AI tools that solve it.",
+    "I've spent 5+ years building products people use every day as a full-stack engineer. Now I'm embracing modern agentic development practices and moving toward Forward Deployed Engineering: working directly with customers to understand their needs and delivering practical, AI-powered solutions that solve real-world problems.",
   description:
-    "Software engineer focused on shipping AI-powered products end to end.",
-  url: "https://example.com",
-  email: "hello@example.com",
+    "Full-stack engineer embracing agentic development to build and ship AI-powered solutions end to end.",
+  url: "https://fabiodev.io",
+  email: "fabio@fabiodev.io",
   links: {
-    github: "https://github.com/your-handle",
-    linkedin: "https://www.linkedin.com/in/your-handle",
+    github: "https://github.com/Fabio0329",
+    linkedin: "https://www.linkedin.com/in/fabiorestrepo",
     resume: "/resume.pdf",
   },
   now: {
