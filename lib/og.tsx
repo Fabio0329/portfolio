@@ -6,7 +6,7 @@ import { site } from "@/lib/site";
 // the colors below mirror the light-theme tokens in app/globals.css.
 export const ogSize = { width: 1200, height: 630 };
 
-const colors = {
+export const ogColors = {
   background: "#ffffff",
   foreground: "#18181b",
   muted: "#52525b",
@@ -30,14 +30,14 @@ export const renderOgCard = ({ eyebrow, title, subtitle }: OgCardProps) =>
         flexDirection: "column",
         justifyContent: "space-between",
         padding: 80,
-        background: colors.background,
-        borderTop: `16px solid ${colors.accent}`,
-        color: colors.foreground,
+        background: ogColors.background,
+        borderTop: `16px solid ${ogColors.accent}`,
+        color: ogColors.foreground,
       }}
     >
       <div style={{ display: "flex", flexDirection: "column" }}>
         {eyebrow && (
-          <div style={{ fontSize: 32, color: colors.accent }}>{eyebrow}</div>
+          <div style={{ fontSize: 32, color: ogColors.accent }}>{eyebrow}</div>
         )}
         <div
           style={{
@@ -56,14 +56,14 @@ export const renderOgCard = ({ eyebrow, title, subtitle }: OgCardProps) =>
               marginTop: 28,
               fontSize: 32,
               lineHeight: 1.4,
-              color: colors.muted,
+              color: ogColors.muted,
             }}
           >
             {subtitle}
           </div>
         )}
       </div>
-      <div style={{ fontSize: 28, color: colors.muted }}>
+      <div style={{ fontSize: 28, color: ogColors.muted }}>
         {`${site.name} · ${site.title}`}
       </div>
     </div>,

@@ -1,16 +1,9 @@
 import { getPosts } from "@/lib/content/posts";
 import { site } from "@/lib/site";
+import { escapeXml } from "@/lib/xml";
 
 // Route handlers aren't cached by default; build this one once at build time.
 export const dynamic = "force-static";
-
-const escapeXml = (value: string) =>
-  value
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&apos;");
 
 export async function GET() {
   const posts = await getPosts();

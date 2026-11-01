@@ -3,7 +3,7 @@ import Link from "next/link";
 
 // Typography comes from the `prose` classes on the post page. Only elements
 // that need behavior, not just styling, are overridden here.
-const components: MDXComponents = {
+export const mdxComponents: MDXComponents = {
   a: ({ href = "", children, ...props }) => {
     // Internal pages get client-side navigation.
     if (href.startsWith("/")) {
@@ -29,5 +29,5 @@ const components: MDXComponents = {
 };
 
 export function useMDXComponents(): MDXComponents {
-  return components;
+  return mdxComponents;
 }
