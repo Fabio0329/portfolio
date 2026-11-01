@@ -1,8 +1,10 @@
 import { readdir } from "node:fs/promises";
 import path from "node:path";
 
-// `npm run dev` shows drafts; `npm run build` leaves them out.
-const showDrafts = process.env.NODE_ENV !== "production";
+// `npm run dev` shows drafts; `npm run build` leaves them out. The
+// accessibility tests build with SHOW_DRAFTS=true so drafts get checked too.
+const showDrafts =
+  process.env.NODE_ENV !== "production" || process.env.SHOW_DRAFTS === "true";
 
 /** Slugs for every .mdx file in a content folder, e.g. "log". */
 export const listSlugs = async (folder: string) => {

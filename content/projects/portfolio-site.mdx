@@ -36,9 +36,17 @@ projects wouldn't show much. The site has to create its own evidence.
 ## Architecture
 
 ```text
-content/log/*.mdx ───────┐
-                         ├─> @next/mdx (build) ─> static HTML + RSS ─> Vercel CDN
-content/projects/*.mdx ──┘
+content/log/*.mdx
+content/projects/*.mdx
+          │
+          ▼
+@next/mdx (build time)
+          │
+          ▼
+static HTML + RSS
+          │
+          ▼
+Vercel CDN
 ```
 
 Posts and case studies are MDX files in the repo. At build time Next.js
