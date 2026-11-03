@@ -20,15 +20,15 @@ on every pull request.
 
 ## Quality checks
 
-| Check                    | Tool                                                                                  | Runs        |
-| ------------------------ | ------------------------------------------------------------------------------------- | ----------- |
-| Lint, strict a11y rules  | ESLint + `jsx-a11y` strict, zero warnings allowed                                     | locally, CI |
-| Formatting               | Prettier, with Tailwind class sorting                                                 | locally, CI |
-| Types                    | TypeScript                                                                            | locally, CI |
-| Unit and component tests | Vitest + Testing Library, each component checked by axe                               | locally, CI |
-| Color contrast           | test that every design-token pair meets 4.5:1 in both themes                          | locally, CI |
-| Page-level accessibility | Playwright + axe on a production build: every page, light and dark, desktop and 375px | locally, CI |
-| Keyboard access          | Playwright: skip link, theme toggle, visible focus                                    | locally, CI |
+| Check                    | Tool                                                                                                                  | Runs        |
+| ------------------------ | --------------------------------------------------------------------------------------------------------------------- | ----------- |
+| Lint, strict a11y rules  | ESLint + `jsx-a11y` strict, zero warnings allowed                                                                     | locally, CI |
+| Formatting               | Prettier, with Tailwind class sorting                                                                                 | locally, CI |
+| Types                    | TypeScript                                                                                                            | locally, CI |
+| Unit and component tests | Vitest + Testing Library, each component checked by axe                                                               | locally, CI |
+| Color contrast           | test that every design-token pair meets 4.5:1 in both themes                                                          | locally, CI |
+| Page-level accessibility | Playwright + axe on a production build: every page, light and dark, at desktop, 375px, and 320px (WCAG Reflow) widths | locally, CI |
+| Keyboard access          | Playwright: skip link, theme toggle, visible focus                                                                    | locally, CI |
 
 `npm run check` runs all of them. `main` is protected: changes land through
 pull requests, and [CI](.github/workflows/ci.yml) runs the same checks plus a
