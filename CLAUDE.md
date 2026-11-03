@@ -38,6 +38,11 @@ Also:
 
 - Never commit or push without Fabio's approval. Leave changes uncommitted
   for review first.
+- `main` is protected: changes land only through pull requests, and CI
+  (`.github/workflows/ci.yml`) runs on every PR. Work on a branch, push the
+  branch, and open a PR with `gh pr create`. Never push to `main` directly.
+- Keep local `main` in sync with `origin/main`; don't stack unpushed commits
+  on it.
 - One commit per logical change, with a summary line plus a short bullet body.
 - Never commit anything personal beyond what's on the public resume (phone,
   home address). If it slips into an unpushed commit, amend it out rather
