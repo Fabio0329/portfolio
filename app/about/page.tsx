@@ -3,7 +3,7 @@ import About from "@/content/about.mdx";
 
 export const metadata: Metadata = {
   title: "About",
-  description: "How I got here, what I'm good at, and what I'm learning.",
+  description: "How I got here, and what I bring to a team.",
 };
 
 export default function AboutPage() {
@@ -12,8 +12,7 @@ export default function AboutPage() {
       <header className="mb-10">
         <h1 className="text-3xl font-semibold tracking-tight">About</h1>
         <p className="mt-3 text-lg text-muted">
-          The longer version: how I got here, what I&apos;m good at, and what
-          I&apos;m learning.
+          The longer version: how I got here, and what I bring to a team.
         </p>
       </header>
       <div className="prose max-w-none">

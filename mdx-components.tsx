@@ -5,8 +5,10 @@ import Link from "next/link";
 // that need behavior, not just styling, are overridden here.
 export const mdxComponents: MDXComponents = {
   a: ({ href = "", children, ...props }) => {
-    // Internal pages get client-side navigation.
-    if (href.startsWith("/")) {
+    // Internal pages get client-side navigation. Files in public/ (anything
+    // with an extension, like /resume.pdf) aren't pages, so they stay plain.
+    const path = href.split(/[?#]/)[0];
+    if (href.startsWith("/") && !/\.[a-z0-9]+$/i.test(path)) {
       return (
         <Link href={href} {...props}>
           {children}
