@@ -148,6 +148,8 @@ The site targets **WCAG 2.1 AA**. These rules are not optional:
 - Never add `eslint-disable` for `jsx-a11y` rules, never weaken or delete axe
   tests, and never edit lint or test config to make checks pass. Fix the
   underlying issue, even if that means changing the design or the content.
+- Never disable, bypass, or edit the `.claude/hooks` guardrails to get past a
+  failure.
 - A task is done only when `npm run lint`, `npm test`, and
   `npm run test:a11y` all pass (`npm run check` runs them all).
 
@@ -179,6 +181,22 @@ Specifics:
   `vitest` explicitly (no globals).
 - A test that can't fail is worthless: when adding a check, break the code
   once to see it fail, then restore it.
+
+## Guardrail hooks
+
+`.claude/settings.json` wires two hooks into every Claude Code session:
+
+- **After every Edit/Write** (`.claude/hooks/lint-file.mjs`): ESLint runs on
+  the edited file. Errors and warnings come back immediately; fix them before
+  moving on.
+- **When a turn ends** (`.claude/hooks/stop-checks.mjs`): `npm run check` runs
+  if the working tree differs from `HEAD` (skipped if nothing changed since
+  the last green run). On failure the turn is blocked and the output is
+  returned; fix the problem and try again. After 3 blocked attempts the turn
+  is allowed to end with a warning to Fabio, and the work is **not** done.
+
+Never disable, bypass, or edit these hooks (or their settings) to get past a
+failure. Changes to the hooks themselves need Fabio's explicit approval.
 
 ## Next.js 16 notes
 
