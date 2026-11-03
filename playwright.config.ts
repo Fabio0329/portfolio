@@ -17,6 +17,14 @@ export default defineConfig({
   },
   projects: [
     { name: "desktop", use: { ...devices["Desktop Chrome"] } },
+    // WCAG 2.1 Reflow (1.4.10): content must work at 320 CSS px wide.
+    {
+      name: "reflow",
+      use: {
+        ...devices["Desktop Chrome"],
+        viewport: { width: 320, height: 640 },
+      },
+    },
     {
       name: "mobile",
       use: {

@@ -163,9 +163,9 @@ Specifics:
   `app/theme-contrast.test.ts`.
 - The global `:focus-visible` ring in `globals.css` is the focus style. Don't
   remove outlines.
-- Nothing may scroll sideways at 375px, including code blocks in MDX: a
-  scrolling `<pre>` isn't keyboard-reachable. Reflow wide content (wrap
-  lines, redraw diagrams vertically) instead.
+- Nothing may scroll sideways at 320px (WCAG Reflow) or wider, including
+  code blocks in MDX: a scrolling `<pre>` isn't keyboard-reachable. Reflow
+  wide content (wrap lines, redraw diagrams vertically) instead.
 
 ## Testing
 
