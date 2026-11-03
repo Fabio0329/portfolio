@@ -10,23 +10,39 @@ https://fabiodev.io, deployed by Vercel on every push to `main`.
 ```bash
 npm run dev           # http://localhost:3000 (drafts visible)
 npm run build         # production build (drafts hidden); every route must be static
-npm run lint          # ESLint
+npm run lint          # ESLint, strict jsx-a11y, zero warnings allowed
 npm run format        # Prettier, with Tailwind class sorting
 npm run format:check
-npx tsc --noEmit      # needs one build first: PageProps/LayoutProps are generated
+npm run typecheck     # generates route types, then tsc --noEmit
+npm test              # Vitest unit + component a11y tests, one run
+npm run test:watch    # Vitest in watch mode
+npm run test:a11y     # Playwright + axe on a production build (builds first)
+npm run check         # all of the above checks, in order: the "done" gate
 ```
 
 ## Before calling a change done
 
-- `npm run build` passes, and every route shows `○` (static) or `●` (SSG) in the
-  output. No `ƒ` (dynamic) routes.
-- `npx tsc --noEmit`, `npm run lint`, and `npm run format:check` are clean.
-- UI changes: check both themes and a 375px viewport.
+A change is done only when **`npm run check` passes locally**: lint, format,
+typecheck, unit tests, and page-level a11y tests, with no failures and no
+warnings. Never report work as finished while any of them fail, and never
+skip one because it's slow.
+
+Also:
+
+- `npm run build` shows every route as `○` (static) or `●` (SSG). No `ƒ`
+  (dynamic) routes.
+- New or changed behavior comes with tests (see Testing). New or changed
+  components come with an axe test.
 
 ## Git
 
 - Never commit or push without Fabio's approval. Leave changes uncommitted
   for review first.
+- `main` is protected: changes land only through pull requests, and CI
+  (`.github/workflows/ci.yml`) runs on every PR. Work on a branch, push the
+  branch, and open a PR with `gh pr create`. Never push to `main` directly.
+- Keep local `main` in sync with `origin/main`; don't stack unpushed commits
+  on it.
 - One commit per logical change, with a summary line plus a short bullet body.
 - Never commit anything personal beyond what's on the public resume (phone,
   home address). If it slips into an unpushed commit, amend it out rather
@@ -122,16 +138,47 @@ npx tsc --noEmit      # needs one build first: PageProps/LayoutProps are generat
   the light tokens by hand. Keep them in sync if the tokens change. Satori
   requires `display: flex` on any element with more than one child.
 
-## Accessibility
+## Accessibility (WCAG 2.1 AA)
+
+The site targets **WCAG 2.1 AA**. These rules are not optional:
+
+- Semantic HTML first. Use ARIA only when no native element fits.
+- Every new or changed component needs an axe test (`vitest-axe`, via
+  `axe` from `@/test/axe`) asserting no violations.
+- Never add `eslint-disable` for `jsx-a11y` rules, never weaken or delete axe
+  tests, and never edit lint or test config to make checks pass. Fix the
+  underlying issue, even if that means changing the design or the content.
+- A task is done only when `npm run lint`, `npm test`, and
+  `npm run test:a11y` all pass (`npm run check` runs them all).
+
+Specifics:
 
 - Keep the heading order intact. Lists under a section heading take a lower
   heading level (see `PostList`'s `headingLevel` prop).
 - Decorative glyphs in links (`←`, `→`, `↗`) go in `<span aria-hidden>`.
 - Icon-only buttons need an `aria-label`.
-- Every text and background token pair must meet WCAG AA (4.5:1) in both
-  themes. Recheck after any token change.
+- Every text and background token pair meets 4.5:1 in both themes, enforced by
+  `app/theme-contrast.test.ts`.
 - The global `:focus-visible` ring in `globals.css` is the focus style. Don't
   remove outlines.
+- Nothing may scroll sideways at 375px, including code blocks in MDX: a
+  scrolling `<pre>` isn't keyboard-reachable. Reflow wide content (wrap
+  lines, redraw diagrams vertically) instead.
+
+## Testing
+
+- **Unit and component tests** (Vitest + Testing Library + jsdom) sit next to
+  the code they test: `lib/dates.test.ts` beside `lib/dates.ts`. Shared setup
+  is in `vitest.setup.ts`; jsdom has no `matchMedia`, so it's stubbed there.
+- Vitest can't render `async` Server Components (pages, loaders). Those are
+  covered by the **page-level tests** in `e2e/` (Playwright + axe), which build
+  the site with `SHOW_DRAFTS=true` so drafts are audited before publishing.
+  They read the page list from `/sitemap.xml`, so new pages are covered
+  automatically.
+- Mock Next-only modules (`next/navigation`) with `vi.mock`. Tests import from
+  `vitest` explicitly (no globals).
+- A test that can't fail is worthless: when adding a check, break the code
+  once to see it fail, then restore it.
 
 ## Next.js 16 notes
 

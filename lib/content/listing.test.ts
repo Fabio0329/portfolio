@@ -2,8 +2,9 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 
 // `isVisible` reads NODE_ENV when the module loads, so each test stubs the
 // environment first and then imports a fresh copy of the module.
-const loadListing = async (nodeEnv: string) => {
+const loadListing = async (nodeEnv: string, showDrafts?: string) => {
   vi.stubEnv("NODE_ENV", nodeEnv);
+  vi.stubEnv("SHOW_DRAFTS", showDrafts);
   vi.resetModules();
   return import("./listing");
 };
@@ -18,6 +19,11 @@ describe("isVisible", () => {
     expect(isVisible({ draft: true })).toBe(false);
     expect(isVisible({ draft: false })).toBe(true);
     expect(isVisible({})).toBe(true);
+  });
+
+  it("shows drafts in a production build with SHOW_DRAFTS=true", async () => {
+    const { isVisible } = await loadListing("production", "true");
+    expect(isVisible({ draft: true })).toBe(true);
   });
 
   it("shows drafts in development", async () => {
