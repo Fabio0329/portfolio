@@ -1,39 +1,43 @@
 export const metadata = {
   title: "This portfolio site",
   summary:
-    "A fast, fully static portfolio with a learning log, built in two weeks to show my work as I move into Forward Deployed Engineering.",
-  status: "building",
-  date: "2026-10-26",
-  stack: ["Next.js", "TypeScript", "Tailwind CSS", "MDX", "Vercel"],
-  links: { repo: "https://github.com/Fabio0329/portfolio" },
+    "A fast, fully static portfolio and learning log, built in under two weeks with WCAG 2.1 AA accessibility enforced by tests on every change.",
+  status: "shipped",
+  date: "2026-10-28",
+  stack: [
+    "Next.js",
+    "TypeScript",
+    "Tailwind CSS",
+    "MDX",
+    "Vitest",
+    "Playwright",
+    "GitHub Actions",
+    "Vercel",
+  ],
+  links: {
+    live: "https://fabiodev.io",
+    repo: "https://github.com/Fabio0329/portfolio",
+  },
   featured: true,
-  draft: true,
 };
 
-{/* TODO(fabio): drafted from what we've built so far. Rewrite in your own voice, fill in "What I learned", and set status: "shipped" and draft: false at launch. */}
+## Overview
 
-## Problem and user
+My personal site: a home page with a short intro and what I'm working on now,
+an About page, a learning log of short dated notes, and write-ups of projects
+like this one. It's fully static, so there are no servers, databases, or API
+keys to keep running.
 
-The people reading this site are recruiters and hiring managers for Forward
-Deployed Engineer roles. They give a portfolio well under a minute, and they're
-looking for evidence that someone ships end to end, learns fast, and explains
-their work clearly.
+## What's on it
 
-Most of my past work is under NDA or was a team effort, so a list of old
-projects wouldn't show much. The site has to create its own evidence.
+- **Home:** intro, a "Now" block, featured projects, and recent log posts
+- **Log:** short dated notes, with an RSS feed
+- **Projects:** write-ups like this one, each with its stack and links
+- **About:** background, skills, and a link to my resume
+- **Extras:** light and dark themes, generated link-preview images for every
+  page, and a sitemap
 
-## Discovery and constraints
-
-- **Thin public history**, so the site leans on a dated learning log and
-  write-ups like this one instead of padded project cards.
-- **Two weeks, one person.** Ship a simple version first and save the bold
-  redesign for after launch.
-- **No servers in the first version.** Fully static, no API keys, nothing to
-  keep running.
-- **Easy to restyle later.** Colors live in a small set of design tokens so a
-  redesign is mostly a token change.
-
-## Architecture
+## How it works
 
 ```text
 content/log/*.mdx
@@ -49,32 +53,30 @@ static HTML + RSS
 Vercel CDN
 ```
 
-Posts and case studies are MDX files in the repo. At build time Next.js
-compiles them, checks their metadata, and pre-renders every page. Visitors get
-plain HTML files, so there's nothing to break at request time.
+- **Content is files in the repo.** Posts and project write-ups are MDX
+  files, reviewed in git like code. One module (`lib/content`) is the only
+  code that knows where they live.
+- **Everything is built ahead of time.** At build time Next.js compiles the
+  MDX, checks each file's metadata, and pre-renders every page. Visitors get
+  plain HTML, so there's nothing to break at request time.
+- **Bad content fails the build, not the page.** A post with missing metadata
+  stops the deploy instead of going live half filled.
+- **Drafts** show locally and stay off the live site.
+- **Theming** runs on a small set of color tokens, so a redesign is mostly a
+  token change.
 
-## Build
+## Testing and deployment
 
-- **Files over a CMS.** Content goes through the same git review as code, and
-  one module (`lib/content`) is the only code that knows where it lives.
-- **Fail the build, not the page.** A post with missing metadata stops the
-  deploy instead of going live half filled.
-- **Drafts.** Work in progress shows locally and stays off the live site.
-- **Staged delivery.** Seven stages, each reviewed and committed before the
-  next one starts.
-
-## Evaluation
-
-- Every route is pre-rendered at build time, confirmed in the build output.
-- Before launch: Lighthouse 95+ in every category, a check at phone width
-  (375px), and link previews tested.
-
-## Handoff
-
-If this were a customer's site, their team would need two things: how to add
-content (drop an MDX file in a folder) and where to change it if the content
-moves to a CMS (one module). Both are documented in the repo.
-
-## What I learned
-
-{/* TODO(fabio) */}
+- **Every change goes through a pull request.** CI runs lint, type checks,
+  unit tests, a production build, and accessibility tests, and a red check
+  blocks the merge. Vercel deploys whatever lands on `main`.
+- **Accessibility is tested, not just reviewed.** Strict accessibility lint
+  rules, an axe check on every component, a test that every color pair meets
+  WCAG contrast in both themes, and axe on every built page (drafts included)
+  in light and dark mode at desktop, 375px, and 320px.
+- **Guardrails for my AI coding agent.** I build with Claude Code, so the repo
+  lints every file it edits and won't let it finish a task until the full
+  check suite passes.
+- **Results:** 104 unit and component tests and 24 page-level tests in a real
+  browser, and Lighthouse 100 in performance, accessibility, best practices,
+  and SEO on every public page, on mobile and desktop, at launch.

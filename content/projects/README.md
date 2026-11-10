@@ -5,8 +5,8 @@ Copy the template below into a new file, fill in the metadata, and write each
 section. Set `draft: true` while writing: drafts show in `npm run dev` but are
 left out of the production build.
 
-Even for self-directed work, write it the way you'd document a customer
-deployment. That's the skill a Forward Deployed Engineer role screens for.
+Write each one as an overview: what the project is, what it does, and how it
+works. Keep it descriptive, not a retrospective.
 
 ```mdx
 export const metadata = {
@@ -20,31 +20,20 @@ export const metadata = {
   draft: true,
 };
 
-## Problem and user
+## Overview
 
-Who has the problem, what it costs them, and what "solved" looks like.
+What the project is and what it's for, in a few sentences.
 
-## Discovery and constraints
+## What's on it
 
-What you learned before building, and the limits you worked within
-(time, budget, data, tools).
+The main features or parts, as a short list.
 
-## Architecture
+## How it works
 
-How the pieces fit. A diagram or a short flow helps.
+How the pieces fit, with a diagram or short flow, plus the key design
+decisions.
 
-## Build
+## Testing and deployment
 
-Key decisions and trade-offs, not a changelog.
-
-## Evaluation
-
-How you know it works: tests, metrics, checks, feedback.
-
-## Handoff
-
-What a customer's team would need to run and extend it. What you'd do next
-with a real customer.
-
-## What I learned
+How it's checked and shipped, and any results (tests, metrics, scores).
 ```
