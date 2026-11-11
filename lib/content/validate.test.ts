@@ -29,7 +29,7 @@ describe("validatePostMetadata", () => {
     (field) => {
       const metadata = { ...post, [field]: undefined };
       expect(() => validatePostMetadata("hello", metadata)).toThrow(
-        "content/log/hello.mdx",
+        "content/blog/hello.mdx",
       );
     },
   );

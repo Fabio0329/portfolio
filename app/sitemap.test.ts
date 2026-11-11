@@ -17,9 +17,9 @@ describe("sitemap", () => {
       site.url,
       `${site.url}/about`,
       `${site.url}/projects`,
-      `${site.url}/log`,
+      `${site.url}/blog`,
       `${site.url}/projects/portfolio-site`,
-      `${site.url}/log/first-post`,
+      `${site.url}/blog/first-post`,
     ]);
   });
 

@@ -12,7 +12,7 @@ export const validatePostMetadata = (
   slug: string,
   metadata: Partial<PostMetadata> | undefined,
 ): PostMetadata => {
-  const file = `content/log/${slug}.mdx`;
+  const file = `content/blog/${slug}.mdx`;
   const { title, description, date, tags, draft } = metadata ?? {};
 
   if (!title || !description || !date || !Array.isArray(tags)) {

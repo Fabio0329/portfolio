@@ -56,7 +56,7 @@ Also:
   links, and the "Now" block. Don't hardcode these anywhere else. `site.url`
   has no trailing slash, since code builds URLs as `${site.url}/path`.
 - **Content is MDX in the repo**, not a CMS or database:
-  - `content/log/*.mdx` → `/log/[slug]`
+  - `content/blog/*.mdx` → `/blog/[slug]`
   - `content/projects/*.mdx` → `/projects/[slug]`
   - `content/about.mdx` → `/about`
   - The filename is the slug.
@@ -88,7 +88,7 @@ Also:
 
 ## Components
 
-- One component per file. Group by feature folder (`components/log/`,
+- One component per file. Group by feature folder (`components/blog/`,
   `components/projects/`, `components/home/`, `components/about/`). Components
   used by more than one feature go in `components/ui/`.
 - Named exports, written as typed arrow consts with a separate props type:
@@ -164,8 +164,10 @@ Specifics:
 - The global `:focus-visible` ring in `globals.css` is the focus style. Don't
   remove outlines.
 - Nothing may scroll sideways at 320px (WCAG Reflow) or wider, including
-  code blocks in MDX: a scrolling `<pre>` isn't keyboard-reachable. Reflow
-  wide content (wrap lines, redraw diagrams vertically) instead.
+  code blocks in MDX: a scrolling `<pre>` isn't keyboard-reachable. Code
+  blocks wrap long lines (`.prose pre` in `globals.css`), but wrapping breaks
+  ASCII diagrams, so draw those vertically and keep them under ~30 characters
+  wide.
 
 ## Testing
 

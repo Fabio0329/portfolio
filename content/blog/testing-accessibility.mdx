@@ -1,0 +1,277 @@
+export const metadata = {
+  title: "Accessibility you can test: WCAG 2.1 AA in a Next.js site",
+  description:
+    "How I check and enforce WCAG 2.1 AA on this site with lint rules, component tests, a contrast test, and real-browser page tests.",
+  date: "2026-11-11",
+  tags: ["accessibility", "testing", "nextjs"],
+};
+
+Accessibility usually gets checked once, by hand, near the end. Then the next
+change quietly breaks it. On this site I treat it like any other requirement:
+if it matters, a test checks it on every change.
+
+This post walks through the setup layer by layer, so you can copy the parts
+you need. The target is **WCAG 2.1 AA**, the level several of the laws
+covered below point to.
+
+## Start with semantic HTML
+
+Most accessibility comes free with the right elements. Before any tooling,
+these are the patterns this site relies on:
+
+- **A skip link** as the first thing on the page, so keyboard users can jump
+  past the header straight to `<main>`.
+- **Landmarks:** `<header>`, `<nav>`, `<main>`, and `<footer>`, with the nav
+  labeled (`aria-label="Main"`) so screen readers can tell it apart.
+- **`aria-current="page"`** on the nav link for the section you're in.
+- **Headings in order.** One `<h1>` per page, and no skipped levels.
+- **Decorative glyphs hidden.** Arrows like `←` in links go in
+  `<span aria-hidden>` so they aren't read out.
+- **Labels on icon-only buttons.** The theme toggle has
+  `aria-label="Toggle dark mode"`.
+- **A visible focus ring.** One global `:focus-visible` style, never removed.
+
+ARIA is for when no native element fits. A `<button>` beats a `<div>` with a
+role and a key handler every time.
+
+## Let a library handle the hard widgets
+
+Links, buttons, and headings are easy to get right with plain HTML. Interactive
+widgets are where accessibility gets hard. A dialog has to move focus inside
+when it opens, keep it there, close on Escape, and hand focus back to the
+button that opened it. A menu needs arrow keys and typeahead. A combobox has
+to tell a screen reader which option is highlighted as you type. The
+[WAI-ARIA Authoring Practices Guide](https://www.w3.org/WAI/ARIA/apg/patterns/)
+documents the expected keyboard and ARIA behavior for each pattern, and
+there's a lot of it.
+
+That's why **headless component libraries** exist. They ship the behavior and
+accessibility of these widgets with no styling, and you bring your own:
+
+- [Radix Primitives](https://www.radix-ui.com/primitives)
+- [React Aria](https://react-spectrum.adobe.com/react-aria/) from Adobe
+- [Headless UI](https://headlessui.com/) from Tailwind Labs
+- [Base UI](https://base-ui.com/)
+
+It's also why so many popular UI kits are built on top of them.
+[shadcn/ui](https://ui.shadcn.com/) started as styled Radix components and
+now supports Base UI as well. The kit gives you the look, the primitive
+underneath gives you the focus handling and ARIA, and the primitive's team
+has already tested it across browsers and screen readers. Rebuilding that for
+every dialog in every project is slow and easy to get wrong.
+
+A library doesn't make your app accessible on its own, though. You can still
+leave a dialog without a title, style text below contrast, or break the
+heading order around it. The tests below still apply.
+
+This site doesn't use one, because its only interactive control is the theme
+toggle, a plain `<button>`. I'd reach for one the moment a dialog, menu, or
+combobox shows up.
+
+## Layer 1: lint while you type
+
+`eslint-plugin-jsx-a11y` flags problems like missing alt text, click handlers
+on non-interactive elements, and invalid ARIA as you write them. Next.js
+registers the plugin but only turns on a few of its rules, as warnings. I turn
+on the full strict set:
+
+```js
+// eslint.config.mjs
+import jsxA11y from "eslint-plugin-jsx-a11y";
+
+export default [
+  // ...your other config
+  {
+    rules: jsxA11y.flatConfigs.strict.rules,
+  },
+];
+```
+
+Lint runs with zero warnings allowed, so any of these fails the check.
+
+## Layer 2: axe on every component
+
+[axe](https://github.com/dequelabs/axe-core) is the engine behind most
+accessibility checkers. `vitest-axe` runs it inside unit tests. I limit it to
+the WCAG 2.1 A and AA rules, so the component tests and the page tests check
+the same standard:
+
+```ts
+// test/axe.ts
+import { configureAxe } from "vitest-axe";
+
+export const axe = configureAxe({
+  runOnly: {
+    type: "tag",
+    values: ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"],
+  },
+});
+```
+
+Then every component test ends with the same check:
+
+```tsx
+const { container } = render(<Header />);
+
+expect(await axe(container)).toHaveNoViolations();
+```
+
+One limit: jsdom, where Vitest renders components, has no layout. axe can't
+measure color contrast there, which is why the next two layers exist.
+
+## Layer 3: contrast as a unit test
+
+All of the site's colors are a handful of design tokens in `globals.css`, with
+a light and a dark value each. A unit test reads that file, computes the WCAG
+contrast ratio for every text and background pair the site uses, and fails if
+any pair drops below **4.5:1** in either theme.
+
+The ratio is a short formula:
+
+```ts
+const contrast = (a: string, b: string) => {
+  const [hi, lo] = [luminance(a), luminance(b)].sort((x, y) => y - x);
+  return (hi + 0.05) / (lo + 0.05);
+};
+```
+
+`luminance` converts a hex color to relative luminance, as defined in the
+WCAG spec. Now a redesign can change every color, and the test tells me right
+away if a pair stops being readable.
+
+## Layer 4: every page, in a real browser
+
+Component tests don't see the whole page: the heading order, the landmarks
+together, real layout. So Playwright builds the production site, reads every
+URL from `/sitemap.xml`, and runs axe on each page:
+
+- in **light and dark** mode
+- at **desktop**, **375px** (a typical phone), and **320px**
+
+320px matters because of WCAG's **Reflow** rule: content has to work at that
+width without scrolling sideways. A separate test checks that no page is
+wider than the screen.
+
+Because the page list comes from the sitemap, a new page is covered the
+moment it exists. Drafts are built and tested too, so a post can't reach the
+live site with a problem.
+
+Some things axe can't judge, so a few tests use the keyboard directly:
+
+- the skip link is the first Tab stop and moves focus into `<main>`
+- the theme toggle works with Enter and Space
+- the focused element has a visible outline
+
+## What tests can't catch
+
+Automated tools find only part of the problems. They can't tell you whether
+alt text is useful, whether the reading order makes sense, or whether a flow
+is confusing with a screen reader. Those still need a person.
+
+## Compliance: proving it, not just doing it
+
+Building an accessible site is half the job. Companies that sell software,
+especially to governments, schools, and large enterprises, also have to show
+it. Here's what that usually looks like.
+
+### The standard behind the laws
+
+Several laws point back to WCAG:
+
+- **ADA Title II (US):** a 2024 Department of Justice rule requires state and
+  local governments to meet WCAG 2.1 AA. In April 2026 the deadlines were
+  [pushed back a year](https://www.federalregister.gov/documents/2026/04/20/2026-07663/extension-of-compliance-dates-for-nondiscrimination-on-the-basis-of-disability-accessibility-of-web),
+  to April 2027 for larger entities and April 2028 for smaller ones.
+- **Section 508 (US):** the
+  [Revised 508 Standards](https://www.access-board.gov/ict/) apply to federal
+  agencies and require electronic content to meet WCAG 2.0 A and AA.
+- **European Accessibility Act (EU):**
+  [in force since June 28, 2025](https://nda.ie/eaa), it covers products and
+  services sold to EU consumers, including e-commerce.
+- **Web Accessibility Directive (EU):** covers
+  [public-sector websites and apps](https://digital-strategy.ec.europa.eu/en/policies/web-accessibility),
+  through the European standard EN 301 549.
+
+W3C keeps a
+[summary of EU accessibility policies](https://www.w3.org/WAI/policies/european-union/)
+that lists which WCAG version each one uses. For EN 301 549, it's WCAG 2.1 AA,
+included word for word for web content.
+
+[WCAG 2.2](https://www.w3.org/WAI/standards-guidelines/wcag/new-in-22/) is
+the current version. It keeps the 2.1 criteria except one obsolete one
+(4.1.1 Parsing) and adds nine more, so targeting 2.2 AA covers 2.1 AA in
+practice. [WCAG 3.0](https://www.w3.org/TR/wcag3/) is still a working draft.
+
+### VPAT and ACR
+
+The **VPAT** (Voluntary Product Accessibility Template) is a template from the
+[Information Technology Industry Council](https://www.itic.org/policy/accessibility/vpat).
+Once it's filled in for a specific product, it's called an **ACR**
+(Accessibility Conformance Report). Procurement teams ask vendors for one
+before they buy.
+
+The current version, 2.5Rev, comes in four editions: **508** for US federal
+buyers, **EU** for EN 301 549, **WCAG** for WCAG 2.x, and **INT**, which
+covers all three in one report. For each criterion you mark Supports,
+Partially Supports, Does Not Support, or Not Applicable, and explain any gaps.
+An honest ACR with known issues listed is worth more than a perfect one nobody
+believes.
+
+### Accessibility statement
+
+A public page on your site that says:
+
+- which standard you target, and how well you meet it
+- known issues, and plans to fix them
+- how you tested, and when
+- how users can report a barrier, and how fast you respond
+
+EU public-sector websites are
+[required to publish one](https://digital-strategy.ec.europa.eu/en/policies/web-accessibility).
+W3C has a free
+[accessibility statement generator](https://www.w3.org/WAI/planning/statements/).
+
+### Audits
+
+Automated tools can't find everything, so ACRs and statements are usually
+backed by a manual **audit**. An expert, often from a third party, tests each
+WCAG criterion by hand with a keyboard and screen readers, and writes up every
+issue they find. The
+[IAAP](https://www.accessibilityassociation.org/) certifications (CPACC and
+WAS) are a common signal that the person auditing knows what they're doing.
+
+### A conformance claim
+
+If you claim WCAG conformance,
+[WCAG itself says](https://www.w3.org/TR/WCAG22/#conformance-required) what
+the claim must include:
+the date, the WCAG version, the level (A, AA, or AAA), which pages it covers,
+and the web technologies the content relies on.
+
+### Keep it true over time
+
+Documentation goes stale the moment someone ships a regression. That's where
+the automated layers above come in: they keep you from drifting between
+audits. Re-audit after big changes, and treat accessibility bugs like any
+other bug.
+
+### Skip the overlays
+
+Accessibility overlays are scripts that promise to make any site compliant
+with one line of code. They don't. In 2025 the US Federal Trade Commission
+[ordered accessiBe to pay $1 million](https://techcrunch.com/2025/01/03/ftc-orders-ai-accessibility-startup-accessibe-to-pay-1m-for-misleading-advertising)
+over claims that its tool made websites WCAG compliant. Fix the code instead.
+
+## Try it yourself
+
+1. Fix the HTML first: landmarks, headings, labels, a skip link.
+2. Turn on `jsx-a11y`'s strict rules.
+3. Add axe to your component tests.
+4. Test your color pairs for 4.5:1, in every theme.
+5. Run axe on every page in a real browser, including at 320px.
+6. Make the checks block merges in CI.
+7. Document it: an accessibility statement, plus an ACR if your buyers ask
+   for one, backed by a manual audit.
+
+Each check here was broken on purpose once, to make sure it actually fails.
+A test that can't fail doesn't protect anything.

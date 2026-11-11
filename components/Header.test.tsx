@@ -4,7 +4,7 @@ import { site } from "@/lib/site";
 import { axe } from "@/test/axe";
 import { Header } from "./Header";
 
-vi.mock("next/navigation", () => ({ usePathname: () => "/log" }));
+vi.mock("next/navigation", () => ({ usePathname: () => "/blog" }));
 
 describe("Header", () => {
   it("is the page banner, with a home link", () => {
@@ -21,12 +21,12 @@ describe("Header", () => {
     const nav = screen.getByRole("navigation", { name: "Main" });
     expect(nav).toHaveTextContent("About");
     expect(nav).toHaveTextContent("Projects");
-    expect(nav).toHaveTextContent("Log");
+    expect(nav).toHaveTextContent("Blog");
   });
 
   it("marks the current section", () => {
     render(<Header />);
-    expect(screen.getByRole("link", { name: "Log" })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: "Blog" })).toHaveAttribute(
       "aria-current",
       "page",
     );

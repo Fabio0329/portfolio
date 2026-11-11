@@ -7,7 +7,7 @@ import { ThemeToggle } from "./ThemeToggle";
 const nav = [
   { href: "/about", label: "About" },
   { href: "/projects", label: "Projects" },
-  { href: "/log", label: "Log" },
+  { href: "/blog", label: "Blog" },
 ];
 
 export const Header: FC = () => {

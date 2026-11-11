@@ -14,7 +14,7 @@ vi.mock("@/lib/content/posts", () => ({
   ],
 }));
 
-describe("GET /log/rss.xml", () => {
+describe("GET /blog/rss.xml", () => {
   it("serves RSS with the right content type", async () => {
     const response = await GET();
     expect(response.headers.get("Content-Type")).toBe(
@@ -24,7 +24,7 @@ describe("GET /log/rss.xml", () => {
 
   it("lists each post with escaped text and absolute links", async () => {
     const xml = await (await GET()).text();
-    const url = `${site.url}/log/mdx-and-next`;
+    const url = `${site.url}/blog/mdx-and-next`;
 
     expect(xml).toContain("<title>MDX &amp; Next.js &lt;notes&gt;</title>");
     expect(xml).toContain(`<link>${url}</link>`);
@@ -36,7 +36,7 @@ describe("GET /log/rss.xml", () => {
 
   it("points the feed's self link at its own absolute URL", async () => {
     const xml = await (await GET()).text();
-    expect(xml).toContain(`<atom:link href="${site.url}/log/rss.xml"`);
+    expect(xml).toContain(`<atom:link href="${site.url}/blog/rss.xml"`);
     expect(xml).not.toMatch(/https?:\/\/[^\s"<]*\/\//);
   });
 });

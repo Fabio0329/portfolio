@@ -7,7 +7,7 @@ const pathname = vi.hoisted(() => ({ current: "/" }));
 
 vi.mock("next/navigation", () => ({ usePathname: () => pathname.current }));
 
-const renderLink = () => render(<NavLink href="/log">Log</NavLink>);
+const renderLink = () => render(<NavLink href="/blog">Blog</NavLink>);
 
 describe("NavLink", () => {
   beforeEach(() => {
@@ -15,28 +15,28 @@ describe("NavLink", () => {
   });
 
   it("marks the link current on its own page", () => {
-    pathname.current = "/log";
+    pathname.current = "/blog";
     renderLink();
-    expect(screen.getByRole("link", { name: "Log" })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: "Blog" })).toHaveAttribute(
       "aria-current",
       "page",
     );
   });
 
   it("stays current on pages nested under it", () => {
-    pathname.current = "/log/some-post";
+    pathname.current = "/blog/some-post";
     renderLink();
-    expect(screen.getByRole("link", { name: "Log" })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: "Blog" })).toHaveAttribute(
       "aria-current",
       "page",
     );
   });
 
   it("isn't current elsewhere, including look-alike paths", () => {
-    for (const path of ["/", "/about", "/logbook"]) {
+    for (const path of ["/", "/about", "/blogroll"]) {
       pathname.current = path;
       const { unmount } = renderLink();
-      expect(screen.getByRole("link", { name: "Log" })).not.toHaveAttribute(
+      expect(screen.getByRole("link", { name: "Blog" })).not.toHaveAttribute(
         "aria-current",
       );
       unmount();
@@ -44,7 +44,7 @@ describe("NavLink", () => {
   });
 
   it("has no accessibility violations", async () => {
-    pathname.current = "/log";
+    pathname.current = "/blog";
     const { container } = renderLink();
     expect(await axe(container)).toHaveNoViolations();
   });

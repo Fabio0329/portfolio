@@ -78,6 +78,13 @@
   --tw-prose-td-borders: var(--border);
 }
 
+/* Code blocks wrap instead of scrolling. A scrolling <pre> isn't reachable
+   by keyboard, and WCAG Reflow forbids sideways scrolling down to 320px. */
+.prose pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
 /* One visible focus ring for keyboard users, in every browser and theme. */
 :focus-visible {
   outline: 2px solid var(--accent);
