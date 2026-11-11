@@ -1,5 +1,4 @@
 // Single source of truth for identity, links, and the "Now" block.
-// TODO(fabio): replace placeholder values before launch.
 export const site = {
   name: "Fabio Restrepo",
   title: "Software Engineer",
@@ -16,9 +15,9 @@ export const site = {
     resume: "/resume.pdf",
   },
   now: {
-    updated: "2026-10-26",
+    updated: "2026-11-11",
     items: [
-      "Building this site in public with Next.js",
+      "Building a guild management site for my guild in World of Warcraft Forever",
       "Learning tool use and evals with the Claude API",
     ],
   },
