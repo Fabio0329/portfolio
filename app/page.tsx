@@ -1,5 +1,5 @@
 import { Hero } from "@/components/home/Hero";
-import { NowBlock } from "@/components/home/NowBlock";
+import { InProgress } from "@/components/home/InProgress";
 import { SectionHeading } from "@/components/home/SectionHeading";
 import { PostList } from "@/components/blog/PostList";
 import { ProjectCard } from "@/components/projects/ProjectCard";
@@ -15,7 +15,7 @@ export default async function Home() {
   return (
     <div className="space-y-16">
       <Hero />
-      <NowBlock />
+      <InProgress />
 
       {featured.length > 0 && (
         <section aria-labelledby="featured-projects">

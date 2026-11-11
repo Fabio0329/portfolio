@@ -53,7 +53,7 @@ Also:
 - **Fully static.** No API routes, server actions, or request-time APIs until
   Phase 2 (AI demos). Route handlers need `export const dynamic = "force-static"`.
 - **`lib/site.ts`** is the single source of truth for name, pitch, URL, email,
-  links, and the "Now" block. Don't hardcode these anywhere else. `site.url`
+  links, and the "In progress" block. Don't hardcode these anywhere else. `site.url`
   has no trailing slash, since code builds URLs as `${site.url}/path`.
 - **Content is MDX in the repo**, not a CMS or database:
   - `content/blog/*.mdx` → `/blog/[slug]`
