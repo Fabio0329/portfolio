@@ -86,7 +86,7 @@ npx playwright install --with-deps chromium
 app/          routes, metadata files (sitemap, robots, OG images), RSS
 components/   one component per file, grouped by feature
 content/      MDX: blog posts, case studies, and the About page
-lib/site.ts   name, links, email, and the "Now" block
+lib/site.ts   name, links, email, and the "In progress" block
 lib/content/  loads and validates MDX metadata
 e2e/          Playwright accessibility and keyboard tests
 ```

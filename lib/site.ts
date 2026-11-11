@@ -1,4 +1,4 @@
-// Single source of truth for identity, links, and the "Now" block.
+// Single source of truth for identity, links, and the "In progress" block.
 export const site = {
   name: "Fabio Restrepo",
   title: "Software Engineer",
@@ -14,11 +14,11 @@ export const site = {
     linkedin: "https://www.linkedin.com/in/fabiorestrepo",
     resume: "/resume.pdf",
   },
-  now: {
+  inProgress: {
     updated: "2026-11-11",
     items: [
-      "Building a guild management site for my guild in World of Warcraft Forever",
-      "Learning tool use and evals with the Claude API",
+      "World of Warcraft Forever guild management site",
+      "Best practices in agentic coding: agent loops, tool use, and evals with the Claude API",
     ],
   },
 } as const;
