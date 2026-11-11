@@ -14,7 +14,7 @@ export const ogColors = {
 };
 
 type OgCardProps = {
-  /** Small label above the title, e.g. "Log" or "Project". */
+  /** Small label above the title, e.g. "Blog" or "Project". */
   eyebrow?: string;
   title: string;
   subtitle?: string;

@@ -7,7 +7,7 @@ import { site } from "@/lib/site";
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [posts, projects] = await Promise.all([getPosts(), getProjects()]);
 
-  const pages = ["", "/about", "/projects", "/log"].map((path) => ({
+  const pages = ["", "/about", "/projects", "/blog"].map((path) => ({
     url: `${site.url}${path}`,
   }));
 
@@ -18,7 +18,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: project.date,
     })),
     ...posts.map((post) => ({
-      url: `${site.url}/log/${post.slug}`,
+      url: `${site.url}/blog/${post.slug}`,
       lastModified: post.date,
     })),
   ];

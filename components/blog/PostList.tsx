@@ -7,7 +7,7 @@ import { formatDate } from "@/lib/dates";
 
 type PostListProps = {
   posts: Post[];
-  /** h2 on /log; h3 when the list sits under its own section heading. */
+  /** h2 on /blog; h3 when the list sits under its own section heading. */
   headingLevel?: "h2" | "h3";
 };
 
@@ -28,7 +28,7 @@ export const PostList: FC<PostListProps> = ({ posts, headingLevel = "h2" }) => {
             </time>
             <Heading className="mt-1 text-lg font-medium">
               <Link
-                href={`/log/${post.slug}`}
+                href={`/blog/${post.slug}`}
                 className="transition-colors hover:text-accent"
               >
                 {post.title}

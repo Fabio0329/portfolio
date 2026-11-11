@@ -1,7 +1,7 @@
 import { getPost, getPosts } from "@/lib/content/posts";
 import { ogSize, renderOgCard } from "@/lib/og";
 
-export const alt = "Log post";
+export const alt = "Blog post";
 export const size = ogSize;
 export const contentType = "image/png";
 
@@ -19,8 +19,8 @@ export default async function Image({
   const post = await getPost(slug);
 
   return renderOgCard({
-    eyebrow: "Log",
-    title: post?.metadata.title ?? "Log",
+    eyebrow: "Blog",
+    title: post?.metadata.title ?? "Blog",
     subtitle: post?.metadata.description,
   });
 }

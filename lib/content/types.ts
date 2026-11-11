@@ -1,4 +1,4 @@
-// Every post in content/log/*.mdx exports this as `metadata`.
+// Every post in content/blog/*.mdx exports this as `metadata`.
 export type PostMetadata = {
   title: string;
   description: string;
@@ -10,7 +10,7 @@ export type PostMetadata = {
 };
 
 // The slug isn't written in the post. It comes from the filename:
-// content/log/hello-world.mdx -> /log/hello-world
+// content/blog/hello-world.mdx -> /blog/hello-world
 export type Post = PostMetadata & { slug: string };
 
 export const projectStatuses = ["building", "shipped"] as const;

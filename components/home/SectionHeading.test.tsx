@@ -7,8 +7,8 @@ const renderHeading = () =>
   render(
     <SectionHeading
       id="latest-posts"
-      title="Latest from the log"
-      href="/log"
+      title="Latest from the blog"
+      href="/blog"
       linkLabel="All posts"
     />,
   );
@@ -17,7 +17,7 @@ describe("SectionHeading", () => {
   it("renders an h2 with the given id, for aria-labelledby", () => {
     renderHeading();
     expect(
-      screen.getByRole("heading", { level: 2, name: "Latest from the log" }),
+      screen.getByRole("heading", { level: 2, name: "Latest from the blog" }),
     ).toHaveAttribute("id", "latest-posts");
   });
 
@@ -25,7 +25,7 @@ describe("SectionHeading", () => {
     renderHeading();
     expect(screen.getByRole("link", { name: "All posts" })).toHaveAttribute(
       "href",
-      "/log",
+      "/blog",
     );
   });
 

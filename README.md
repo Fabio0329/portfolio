@@ -1,6 +1,6 @@
 # fabiodev.io
 
-Source for [fabiodev.io](https://fabiodev.io), my portfolio and learning log as I
+Source for [fabiodev.io](https://fabiodev.io), my portfolio and blog as I
 move into Forward Deployed Engineering.
 
 The site is deliberately small. The engineering is in how it's built and
@@ -13,7 +13,7 @@ on every pull request.
   pre-rendered at build time
 - **Tailwind CSS v4** with a design-token layer, so a redesign is mostly a
   token change
-- **MDX** for log posts and case studies, compiled at build time with
+- **MDX** for blog posts and case studies, compiled at build time with
   `@next/mdx`
 - **Vercel** for hosting, with Vercel Web Analytics
 - Generated Open Graph images, a sitemap, robots.txt, and an RSS feed
@@ -85,7 +85,7 @@ npx playwright install --with-deps chromium
 ```text
 app/          routes, metadata files (sitemap, robots, OG images), RSS
 components/   one component per file, grouped by feature
-content/      MDX: log posts, case studies, and the About page
+content/      MDX: blog posts, case studies, and the About page
 lib/site.ts   name, links, email, and the "Now" block
 lib/content/  loads and validates MDX metadata
 e2e/          Playwright accessibility and keyboard tests
@@ -95,8 +95,8 @@ Unit tests sit next to the code they test, for example `lib/dates.test.ts`.
 
 ## Adding content
 
-Log posts go in `content/log/` and case studies in `content/projects/`. The
-filename becomes the URL: `content/log/hello.mdx` is served at `/log/hello`.
+Blog posts go in `content/blog/` and case studies in `content/projects/`. The
+filename becomes the URL: `content/blog/hello.mdx` is served at `/blog/hello`.
 Each file exports its metadata:
 
 ```mdx

@@ -19,14 +19,14 @@ const A = mdxComponents.a as ComponentType<AnchorProps>;
 
 describe("MDX links", () => {
   it("send internal pages through the client-side router", () => {
-    render(<A href="/log/first">First post</A>);
+    render(<A href="/blog/first">First post</A>);
     const link = screen.getByRole("link", { name: "First post" });
-    expect(link).toHaveAttribute("href", "/log/first");
+    expect(link).toHaveAttribute("href", "/blog/first");
     expect(link).toHaveAttribute("data-next-link");
     expect(link).not.toHaveAttribute("target");
   });
 
-  it.each(["/resume.pdf", "/log/rss.xml?x=1"])(
+  it.each(["/resume.pdf", "/blog/rss.xml?x=1"])(
     "keep links to files, like %s, as plain links",
     (href) => {
       render(<A href={href}>file</A>);
@@ -57,7 +57,7 @@ describe("MDX links", () => {
   it("have no accessibility violations", async () => {
     const { container } = render(
       <p>
-        See <A href="/log">the log</A> or{" "}
+        See <A href="/blog">the blog</A> or{" "}
         <A href="https://nextjs.org">Next.js</A>.
       </p>,
     );

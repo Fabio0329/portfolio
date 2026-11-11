@@ -33,11 +33,11 @@ describe("PostList", () => {
     render(<PostList posts={posts} />);
     expect(screen.getByRole("link", { name: "First post" })).toHaveAttribute(
       "href",
-      "/log/first",
+      "/blog/first",
     );
     expect(screen.getByRole("link", { name: "Second post" })).toHaveAttribute(
       "href",
-      "/log/second",
+      "/blog/second",
     );
   });
 

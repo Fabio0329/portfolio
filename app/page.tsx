@@ -1,7 +1,7 @@
 import { Hero } from "@/components/home/Hero";
 import { NowBlock } from "@/components/home/NowBlock";
 import { SectionHeading } from "@/components/home/SectionHeading";
-import { PostList } from "@/components/log/PostList";
+import { PostList } from "@/components/blog/PostList";
 import { ProjectCard } from "@/components/projects/ProjectCard";
 import { getPosts } from "@/lib/content/posts";
 import { getProjects } from "@/lib/content/projects";
@@ -37,8 +37,8 @@ export default async function Home() {
         <section aria-labelledby="latest-posts">
           <SectionHeading
             id="latest-posts"
-            title="Latest from the log"
-            href="/log"
+            title="Latest from the blog"
+            href="/blog"
             linkLabel="All posts"
           />
           <PostList posts={latestPosts} headingLevel="h3" />

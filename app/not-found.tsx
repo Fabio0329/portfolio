@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 const links = [
   { href: "/", label: "Home" },
   { href: "/projects", label: "Projects" },
-  { href: "/log", label: "Log" },
+  { href: "/blog", label: "Blog" },
 ];
 
 export default function NotFound() {

@@ -5,7 +5,7 @@ import { validatePostMetadata } from "./validate";
 
 /** Visible posts, newest first. */
 export const getPosts = async (): Promise<Post[]> => {
-  const slugs = await listSlugs("log");
+  const slugs = await listSlugs("blog");
 
   const posts = await Promise.all(
     slugs.map(async (slug) => {
@@ -26,11 +26,11 @@ export const getPost = async (slug: string) => {
   return loadPost(slug);
 };
 
-// The bundler compiles every .mdx file in content/log ahead of time, so any
+// The bundler compiles every .mdx file in content/blog ahead of time, so any
 // slug can be imported here. `default` is the post body as a component.
 const loadPost = async (slug: string) => {
   const mod: { default: MDXContent; metadata?: Partial<PostMetadata> } =
-    await import(`@/content/log/${slug}.mdx`);
+    await import(`@/content/blog/${slug}.mdx`);
 
   return {
     Content: mod.default,

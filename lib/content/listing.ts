@@ -6,7 +6,7 @@ import path from "node:path";
 const showDrafts =
   process.env.NODE_ENV !== "production" || process.env.SHOW_DRAFTS === "true";
 
-/** Slugs for every .mdx file in a content folder, e.g. "log". */
+/** Slugs for every .mdx file in a content folder, e.g. "blog". */
 export const listSlugs = async (folder: string) => {
   const files = await readdir(path.join(process.cwd(), "content", folder));
   return files
